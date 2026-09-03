@@ -30,7 +30,7 @@ The actual project logic lives in `Core/Inc` / `Core/Src`; everything under `Dri
 - **MCU:** STM32F411C(C/E)U (Cortex-M4, UFQFPN48) — the same chip used on "BlackPill" dev boards, but here on a custom PCB, you can use the minimum sistem or insert a blackpill in the socket, it works either way.
 - **Display:** ILI9341 TFT over SPI.
 - **Input:** 16-button matrix keypad (4×4), wired directly on the PCB.
-- **Power:** coin-cell battery holder + NCP1117-3.3 LDO regulator.
+- **Power:** coin-cell battery holder + AMS1117-3.3 LDO regulator.
 - **Solver:** Gauss-Jordan elimination, single-precision (`float`) complex arithmetic, systems from 2×2 up to 4×4.
 
 No serial terminal, USB host, or PC connection is needed to use the calculator — power it on, and the keypad + screen are the whole interface. (USB/SWD is only used to flash firmware.)
