@@ -27,7 +27,7 @@ The actual project logic lives in `Core/Inc` / `Core/Src`; everything under `Dri
 
 ## 🎯 Overview
 
-- **MCU:** STM32F411C(C/E)U (Cortex-M4, UFQFPN48) — the same chip used on "BlackPill" dev boards, but here on a custom PCB, not a plug-in module.
+- **MCU:** STM32F411C(C/E)U (Cortex-M4, UFQFPN48) — the same chip used on "BlackPill" dev boards, but here on a custom PCB, you can use the minimum sistem or insert a blackpill in the socket, it works either way.
 - **Display:** ILI9341 TFT over SPI.
 - **Input:** 16-button matrix keypad (4×4), wired directly on the PCB.
 - **Power:** coin-cell battery holder + NCP1117-3.3 LDO regulator.
