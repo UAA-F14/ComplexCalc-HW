@@ -1,304 +1,106 @@
-# Hardware Version 🔌⚡
+# ComplexCalc — Hardware Version 🔌⚡
+
+**A standalone embedded calculator for complex n×n linear systems (Ax=b)** — no PC required at runtime. Custom STM32F411 PCB with a 16-button keypad and an ILI9341 TFT display, built for electronics students and AC circuit analysis.
+
+This is the hardware counterpart to [DasReyxr/Py-ComplexCalc](https://github.com/DasReyxr/Py-ComplexCalc), the desktop/GUI version of the same solver.
+
+> [!NOTE]
+> **Work in progress.** Firmware is functional (keypad input, TFT UI, Gauss-Jordan solver); the PCB is still being routed (some ADC connections are pending — see [Design](#-design-pcb)).
+
+---
+
+## 📁 Repository Structure
 
 ```
-├── code
-│   └── 06ComplexCalcDasProject
-│       ├── 06ComplexCalcDasProject.ioc
-│       ├── Core
-│       │   ├── Inc
-│       │   │   ├── ComplexGJ.h
-│       │   │   ├── display_ui.h
-│       │   │   ├── fonts.h
-│       │   │   ├── HALTecMat4x4.h
-│       │   │   ├── main.h
-│       │   │   ├── stm32f4xx_hal_conf.h
-│       │   │   ├── stm32f4xx_it.h
-│       │   │   ├── testimg.h
-│       │   │   └── TFT_Screen.h
-│       │   └── Src
-│       │       ├── display_ui.c
-│       │       ├── fonts.c
-│       │       ├── HALTecMat4x4.c
-│       │       ├── main.c
-│       │       ├── stm32f4xx_hal_msp.c
-│       │       ├── stm32f4xx_it.c
-│       │       ├── SWComplexGJ.c
-│       │       ├── syscalls.c
-│       │       ├── sysmem.c
-│       │       ├── system_stm32f4xx.c
-│       │       └── TFT_Screen.c
-├── design
-│   └── ComplexCalc
-│       ├── ComplexCalc.kicad_pcb
-│       ├── ComplexCalc.kicad_prl
-│       ├── ComplexCalc.kicad_pro
-│       ├── ~ComplexCalc.kicad_pro.lck
-│       ├── ComplexCalc.kicad_sch
-│       └── ~ComplexCalc.kicad_sch.lck
-├── doc
+├── code/
+│   └── 06ComplexCalcDasProject/   # STM32CubeIDE / CMake firmware project
+│       ├── Core/
+│       │   ├── Inc/               # ComplexGJ.h (solver), TFT_Screen.h, display_ui.h, ...
+│       │   └── Src/                # SWComplexGJ.c (solver), TFT_Screen.c, display_ui.c, main.c, ...
+│       └── Drivers/                # Vendored STM32 HAL + CMSIS (ST-generated, not project code)
+├── design/
+│   └── ComplexCalc/                # KiCad schematic + PCB (in progress)
 └── README.md
 ```
 
-**Embedded n×n complex linear system solver for STM32 microcontrollers.**
-
-Real-time computation of Ax=b problems directly on ARM-based hardware, perfect for **AC circuit analysis, impedance calculations, and embedded signal processing**.
+The actual project logic lives in `Core/Inc` / `Core/Src`; everything under `Drivers/` is STM32CubeMX-generated boilerplate.
 
 ---
 
 ## 🎯 Overview
 
-This folder contains complete hardware implementations for solving complex linear systems on microcontroller platforms, with no external dependencies or desktop PC required.
+- **MCU:** STM32F411C(C/E)U (Cortex-M4, UFQFPN48) — the same chip used on "BlackPill" dev boards, but here on a custom PCB, not a plug-in module.
+- **Display:** ILI9341 TFT over SPI.
+- **Input:** 16-button matrix keypad (4×4), wired directly on the PCB.
+- **Power:** coin-cell battery holder + NCP1117-3.3 LDO regulator.
+- **Solver:** Gauss-Jordan elimination, single-precision (`float`) complex arithmetic, systems from 2×2 up to 4×4.
 
-**Key Advantages:**
-- ⚡ Real-time computation on embedded hardware
-- 💾 Onboard persistent storage
-- 🔋 Low power consumption
-
----
-
-## 📋 Supported Platforms
-
-### **BlackPill STM32F411CE** ✅
-```
-📁 BlackPill STM32F411CE/
-
-Platform Details:
-├─ MCU: ARM Cortex-M4 @ 100 MHz
-├─ RAM: 128 KB
-├─ Flash: 512 KB
-├─ USB: Full-Speed (480 Mbps)
-├─ Peripherals: ADC, UART, SPI, I2C
-├─ Typical Use: Budget-conscious, compact designs
-└─ Status: Fully implemented ✓
-```
-
-**Perfect for:**
-- Portable embedded instruments
-- Compact circuit analysis tools
-- Educational projects with size constraints
-- Low-cost mass production
+No serial terminal, USB host, or PC connection is needed to use the calculator — power it on, and the keypad + screen are the whole interface. (USB/SWD is only used to flash firmware.)
 
 ---
 
-### **RayPill STM32F446ZE** 🔄
-```
-📁 RayPill STM32F446ZE/
+## 🚀 Build & Flash
 
-Platform Details:
-├─ MCU: ARM Cortex-M4 @ 180 MHz
-├─ RAM: 192 KB
-├─ Flash: 512 KB
-├─ USB: High-Speed (480 Mbps)
-├─ Peripherals: Multiple ADCs, UARTs, SPI, I2C, Ethernet
-├─ Typical Use: High-performance applications
-└─ Status: Fully implemented ✓
-```
+**Using STM32CubeIDE (recommended):**
+1. Open STM32CubeIDE.
+2. File → Open Projects from File System.
+3. Select `code/06ComplexCalcDasProject/`.
+4. Build (`Ctrl+B`), then flash over USB/SWD (`Ctrl+Alt+X`).
 
-**Perfect for:**
-- Multi-channel signal processing
-- High-speed real-time systems
-- Industrial instrumentation
-- Network-connected devices
-
----
-
-## 🚀 Quick Start
-
-### **Step 1: Choose Your Platform**
-- **Limited resources?** → BlackPill STM32F411CE
-- **Need more power?** → RayPill STM32F446ZE
-
-### **Step 2: Get the Code**
+**Using CMake + the ARM GCC toolchain (also supported by this project):**
 ```bash
-cd HW\ Version/code/BlackPill\ STM32F411CE/
-# or
-cd HW\ Version/code/RayPill\ STM32F446ZE/
+cd code/06ComplexCalcDasProject
+cmake --preset Debug      # or: Release
+cmake --build --build-preset Debug
 ```
-
-### **Step 3: Build & Flash**
-
-**Using STM32CubeIDE (Recommended):**
-1. Open STM32CubeIDE
-2. File → Open Projects from File System
-3. Select the platform folder
-4. Press `Build` (Ctrl+B)
-5. Connect microcontroller via USB
-6. Press `Run` (Ctrl+Alt+X) to flash
-
-**Using Arm Compiler Toolchain:**
-```bash
-arm-none-eabi-gcc -mcpu=cortex-m4 -mthumb \
-  -O2 -Wall -c main.c -o main.o
-
-arm-none-eabi-ld main.o -o firmware.elf
-
-arm-none-eabi-objcopy -O binary firmware.elf firmware.bin
-```
-
-### **Step 4: Connect & Use**
-
-**Via UART (Serial Terminal):**
-```
-Device: COM3 (Windows) or /dev/ttyUSB0 (Linux)
-Baud Rate: 115200
-Data Bits: 8
-Parity: None
-Stop Bits: 1
-Flow Control: None
-```
+This uses the project's own `cmake/gcc-arm-none-eabi.cmake` toolchain file — you'll need `arm-none-eabi-gcc` and `ninja` installed.
 
 ---
 
----
+## 🎮 Usage
 
-## 🔧 Technical Details
+On power-up, the screen prompts for the system size (`2`–`4`). From there:
 
-### **Solver Algorithm**
-- **Method:** Gaussian elimination with partial pivoting
-- **Precision:** Double-precision floating-point (64-bit)
-- **Maximum Size:** 10×10 systems (configurable)
-- **Computation Time:** ~10-50 ms (BlackPill), ~5-25 ms (RayPill)
+| Input | Action |
+|---|---|
+| `0`–`9` | Enter digits (toggles between real/imaginary part) |
+| `=` | Confirm entry / advance |
+| `S` + `P` (combo) | Cycle display theme |
 
-### **Input Format Support**
-| Format | Example | Supported |
-|--------|---------|-----------|
-| **Rectangular** | `3+4j`, `-j2`, `5` | ✅ Yes |
-| **Phasor** | `10L30`, `5L-90°` | ✅ Yes |
-| **Mixed** | Both in same system | ✅ Yes |
-
-### **Output Format**
-Results automatically convert to:
-- **Rectangular:** `a + bj` (real + imaginary parts)
+Once the full A matrix and b vector are entered, the solver runs on-device and the result is shown on screen — no PC needed.
 
 ---
 
-## 🛠️ Hardware Requirements
+## 🧮 Solver Details
 
-### **Minimum Setup**
-
-**For BlackPill:**
-- 1× BlackPill STM32F411CE board
-- 1× USB-C cable (power & programming)
-- 1× Serial terminal software (PuTTY, Tera Term, etc.)
-
-**For RayPill:**
-- 1× RayPill STM32F446ZE board
-- 1× USB-A cable (power & programming)
-- 1× Serial terminal software
-- Optional: Additional sensors/peripherals
-
-### **Optional Accessories**
-- Logic analyzer (debugging)
-- Oscilloscope (signal verification)
-- SWD debugger (advanced debugging)
+- **Algorithm:** Gauss-Jordan elimination (`solve_complex_system` in `ComplexGJ.h`/`SWComplexGJ.c`).
+- **Precision:** single-precision float, `EPSILON = 1e-7` for singularity checks.
+- **Maximum size:** 4×4 (`N_MAX`), matching the keypad-driven size range (2–4).
+- **Error handling:** returns `SOLVER_ERR_INVALID_SIZE` / `SOLVER_ERR_SINGULAR` for out-of-range sizes or singular matrices.
 
 ---
 
+## 🖥️ Design (PCB)
 
-## 🚨 Troubleshooting
+KiCad project at `design/ComplexCalc/` — schematic + PCB for the keypad, MCU, TFT header, and power circuitry.
 
-### **Build Issues**
+![PCB routing in progress](design/src/readme/Design_Calculator.png)
 
-| Problem | Solution |
-|---------|----------|
-| **"arm-none-eabi-gcc not found"** | Install ARM GCC toolchain for your OS |
-| **Cannot connect to CubeIDE** | Ensure STM32CubeIDE is installed with F4 MCU support |
-| **Build errors in HAL** | Verify STM32CubeMX generated files match target MCU |
-
-### **Runtime Issues**
-
-| Problem | Solution |
-|---------|----------|
-| **No serial output** | Check UART pins & baud rate (115200) |
-| **"Singular matrix" error** | Matrix A must be invertible; add small diagonal term if needed |
-| **Parsing error on input** | Use format `3+4j` (no spaces), `10L30` (not degrees symbol) |
-| **System won't flash** | Ensure USB cable supports data transfer; try different port |
-
-
----
-
-## 📊 Performance Comparison
-
-| Metric | BlackPill F411 | RayPill F446 |
-|--------|----------------|--------------|
-| **Clock Speed** | 100 MHz | 180 MHz |
-| **RAM** | 128 KB | 192 KB |
-| **Flash** | 512 KB | 512 KB |
-| **Solve Time (3×3)** | ~25 ms | ~12 ms |
-| **Solve Time (10×10)** | ~200 ms | ~80 ms |
-| **USB Speed** | Full-Speed | High-Speed |
-| **Power Draw** | ~25 mA idle | ~45 mA idle |
-
----
-
-## 🔌 Pinout Reference
-
-
-## 📚 Additional Resources
-
-- **[STM32F411 Datasheet](https://www.st.com/resource/en/datasheet/stm32f411ce.pdf)** — Complete hardware specs
-- **[STM32F446 Datasheet](https://www.st.com/resource/en/datasheet/stm32f446ze.pdf)** — Complete hardware specs
-- **[STM32CubeIDE Setup Guide](https://www.st.com/en/development-tools/stm32cubeide.html)** — IDE download & installation
-- **[ARM CMSIS-DSP Library](https://github.com/ARM-software/CMSIS_5)** — Optimized math library
-- **[Keil Compiler Documentation](https://www2.keil.com/mdk5)** — ARM compiler details
-
----
-
-## 🐛 Known Limitations
-
-- **Matrix Size:** Limited to 10×10 by design (RAM constraint on BlackPill)
-- **Precision:** Double-precision (64-bit) floating-point accuracy
-- **Complex Numbers:** No quaternions or higher algebras (future feature)
-- **Visualization:** No built-in display output 
+*Routing in progress — some ADC-related connections are still pending. A rendered board image will replace this screenshot once the layout is finished.*
 
 ---
 
 ## 🤝 Contributing
 
-Want to add support for more platforms? We'd love your help!
+1. Firmware changes go in `code/06ComplexCalcDasProject/Core/`.
+2. PCB changes go in `design/ComplexCalc/` (KiCad 8+).
+3. Open a PR against this repo.
 
-**How to contribute:**
-1. Create a new folder: `code/YourMCU_Name/`
-2. Implement `solver.c`, `parser.c`, `uart_io.c`, `storage.c`
-3. Add build instructions and testing results
-4. Submit a pull request with documentation
+## 📞 Issues
 
-**Planned Goals:**
-- [ ] Support for STM32F
-- [ ] Optimize the code
-- [ ] Clean the code
-- [ ] Compile the Hex for easy uploading
-- [ ] Upload the Designing files (Open Hardware) 
+Report bugs or hardware questions via this repo's [Issues](https://github.com/UAA-F14/ComplexCalc-HW/issues) — not the software repo's.
 
----
+## 🔗 Related
 
-## 📞 Support & Issues
-
-- **Bug Reports:** [GitHub Issues](https://github.com/DasReyxr/Py-ComplexCalc/issues)
-- **Hardware Questions:** Open an issue with `[HARDWARE]` tag
-- **Schematics:** Check `HW Files Schematic & Design/`
-- **Build Help:** Include your MCU, IDE, and error message
-
----
-
-## 📄 License
-
-MIT License — See [../LICENSE](../LICENSE) for details.
-
----
-
-## 🎯 Quick Links
-
-| Resource | Location |
-|----------|----------|
-| **Main README** | [../README_GENERAL.md](../README_GENERAL.md) |
-| **Software Version** | [../Software%20Version/](../Software%20Version/) |
-| **Schematics** | [HW%20Files%20Schematic%20&%20Design/](HW%20Files%20Schematic%20%26%20Design/) |
-| **GitHub** | [DasReyxr/Py-ComplexCalc](https://github.com/DasReyxr/Py-ComplexCalc) |
-
----
-
-**For Electronics Engineers, By Electronics Engineers** ⚡
-
-*"Embedded linear algebra solver. No PC required."*.
-
+- [DasReyxr/Py-ComplexCalc](https://github.com/DasReyxr/Py-ComplexCalc) — desktop GUI version, same Ax=b solver
+- [IKGB105/Py-ComplexCalc](https://github.com/IKGB105/Py-ComplexCalc) — actively maintained fork
