@@ -2,8 +2,6 @@
 
 **A standalone embedded calculator for complex n×n linear systems (Ax=b)** — no PC required at runtime. Custom STM32F411 PCB with a 16-button keypad and an ILI9341 TFT display, built for electronics students and AC circuit analysis.
 
-This is the hardware counterpart to [DasReyxr/Py-ComplexCalc](https://github.com/DasReyxr/Py-ComplexCalc), the desktop/GUI version of the same solver.
-
 > [!NOTE]
 > **Work in progress.** Firmware is functional (keypad input, TFT UI, Gauss-Jordan solver); the PCB is still being routed (some ADC connections are pending — see [Design](#-design-pcb)).
 
@@ -98,9 +96,4 @@ KiCad project at `design/ComplexCalc/` — schematic + PCB for the keypad, MCU, 
 
 ## 📞 Issues
 
-Report bugs or hardware questions via this repo's [Issues](https://github.com/UAA-F14/ComplexCalc-HW/issues) — not the software repo's.
-
-## 🔗 Related
-
-- [DasReyxr/Py-ComplexCalc](https://github.com/DasReyxr/Py-ComplexCalc) — desktop GUI version, same Ax=b solver
-- [IKGB105/Py-ComplexCalc](https://github.com/IKGB105/Py-ComplexCalc) — actively maintained fork
+Report bugs or hardware questions via this repo's [Issues](https://github.com/UAA-F14/ComplexCalc-HW/issues).
