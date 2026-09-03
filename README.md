@@ -86,6 +86,8 @@ KiCad project at `design/ComplexCalc/` — schematic + PCB for the keypad, MCU, 
 
 *Routing in progress — some ADC-related connections are still pending. A rendered board image will replace this screenshot once the layout is finished.*
 
+A datasheet-vs-schematic power supply review (VCAP sizing, VBAT, NRST, HSE crystal value) is available at [`docs/ComplexCalc-HW_power_supply_review_en.pdf`](docs/ComplexCalc-HW_power_supply_review_en.pdf) ([Spanish version](docs/ComplexCalc-HW_power_supply_review.pdf)).
+
 ---
 
 ## 🤝 Contributing
