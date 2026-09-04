@@ -4664,6 +4664,12 @@
 		(uuid "b2d6bf79-89a2-458d-bbec-73803693a5b2")
 	)
 	(junction
+		(at 144.78 88.9)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "c0ccffed-2b23-42af-8505-86c62f809a6c")
+	)
+	(junction
 		(at 114.3 40.64)
 		(diameter 0)
 		(color 0 0 0 0)
@@ -5309,16 +5315,6 @@
 	)
 	(wire
 		(pts
-			(xy 134.62 92.71) (xy 144.78 92.71)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "334e6a12-eeec-4412-820b-bb244aeafd29")
-	)
-	(wire
-		(pts
 			(xy 82.55 105.41) (xy 88.9 105.41)
 		)
 		(stroke
@@ -5709,7 +5705,7 @@
 	)
 	(wire
 		(pts
-			(xy 133.35 88.9) (xy 146.05 88.9)
+			(xy 133.35 88.9) (xy 144.78 88.9)
 		)
 		(stroke
 			(width 0)
@@ -6579,6 +6575,16 @@
 	)
 	(wire
 		(pts
+			(xy 144.78 88.9) (xy 144.78 92.71)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "ad98be97-32c8-44bf-a9aa-d04a7446ff4b")
+	)
+	(wire
+		(pts
 			(xy 180.34 26.67) (xy 177.8 26.67)
 		)
 		(stroke
@@ -6776,6 +6782,16 @@
 			(type default)
 		)
 		(uuid "bdfb3016-91eb-4733-95ce-0a74bbad788f")
+	)
+	(wire
+		(pts
+			(xy 144.78 88.9) (xy 146.05 88.9)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "be617fb9-2ecc-40a6-956c-e71d2a1c5f5b")
 	)
 	(wire
 		(pts
@@ -13701,30 +13717,6 @@
 			)
 		)
 	)
-	(global_label "VBAT"
-		(shape input)
-		(at 134.62 92.71 180)
-		(fields_autoplaced yes)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify right)
-		)
-		(uuid "d6d13bd2-5fd1-4f9b-b183-1074870e5d72")
-		(property "Intersheetrefs" "${INTERSHEET_REFS}"
-			(at 127.22 92.71 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify right)
-			)
-		)
-	)
 	(global_label "OSC_OUT"
 		(shape input)
 		(at 213.995 130.81 0)
@@ -15221,7 +15213,7 @@
 		(fields_autoplaced yes)
 		(uuid "32869f0b-7779-4163-ae1f-069af46739a5")
 		(property "Reference" "C9"
-			(at 203.835 93.9799 0)
+			(at 203.2 93.9799 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -15231,8 +15223,8 @@
 				(justify right)
 			)
 		)
-		(property "Value" "1uF"
-			(at 203.835 96.5199 0)
+		(property "Value" "100nF"
+			(at 203.2 96.5199 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -15642,7 +15634,7 @@
 				(justify left)
 			)
 		)
-		(property "Value" "2.2uF"
+		(property "Value" "4.7uF"
 			(at 124.206 173.99 0)
 			(show_name no)
 			(do_not_autoplace no)

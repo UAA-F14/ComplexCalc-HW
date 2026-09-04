@@ -1072,7 +1072,7 @@
 				)
 			)
 		)
-		(property "Value" "1uF"
+		(property "Value" "100nF"
 			(at 0 1.68 90)
 			(layer "F.Fab")
 			(uuid "effbb6ea-84bb-4d69-b82c-952673f235b9")
@@ -2872,7 +2872,7 @@
 			(size 0.875 0.25)
 			(layers "F.Cu" "F.Mask" "F.Paste")
 			(roundrect_rratio 0.25)
-			(net "VBAT")
+			(net "3.3V")
 			(pinfunction "VBAT_1")
 			(pintype "power_in")
 			(uuid "bac94a72-15b6-4e08-b265-32aa9fef4c8f")
@@ -5761,7 +5761,7 @@
 				)
 			)
 		)
-		(property "Value" "2.2uF"
+		(property "Value" "4.7uF"
 			(at 0 1.679999 90)
 			(layer "F.Fab")
 			(uuid "6b67ab48-f393-4c90-8ab8-22e27052be22")
@@ -18625,6 +18625,14 @@
 		(uuid "59b1c4ff-c43f-4967-ab5e-9688e30d840c")
 	)
 	(segment
+		(start 136.475 15.075)
+		(end 135.25 13.85)
+		(width 0.2)
+		(layer "F.Cu")
+		(net "3.3V")
+		(uuid "5de3057b-63b2-4429-ab36-01868041cc13")
+	)
+	(segment
 		(start 142.6625 21.4875)
 		(end 144.4375 21.4875)
 		(width 0.2)
@@ -18679,6 +18687,14 @@
 		(layer "F.Cu")
 		(net "3.3V")
 		(uuid "98bbc97c-1dd4-492c-9c12-b47ae53b6af6")
+	)
+	(segment
+		(start 136.475 15.3)
+		(end 136.475 15.075)
+		(width 0.2)
+		(layer "F.Cu")
+		(net "3.3V")
+		(uuid "9b470ac2-16c8-4c21-a0e4-b7e7b793d34e")
 	)
 	(segment
 		(start 134.3 13.95)

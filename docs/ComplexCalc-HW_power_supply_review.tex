@@ -167,11 +167,16 @@ Regulador (U2) & --- & \textbf{AMS1117-3.3} (no NCP1117-3.3) &
 
 \begin{enumerate}
   \item Cambiar C14 de 2.2\,µF a \textbf{4.7\,µF} en VCAP\_1.
+        \textcolor{okgreen}{\textbf{[Hecho]}} --- verificado en el netlist
+        actual del esquemático: C14 = 4.7\,µF.
   \item Conectar VBAT (pin 1) a la red de 3.3\,V (o dejar un footprint de
         100\,nF si en el futuro se agrega batería de respaldo real para el
         RTC).
+        \textcolor{okgreen}{\textbf{[Hecho]}} --- verificado: VBAT (U3
+        pin~1) ahora está en el net \texttt{3.3V}.
   \item Bajar C9 (NRST) de 1\,µF a \textbf{100\,nF} — valor de libro y el que
         usa el BlackPill real de referencia en el mismo nodo.
+        \textcolor{okgreen}{\textbf{[Hecho]}} --- verificado: C9 = 100\,nF.
   \item Antes de habilitar el HSE en firmware, corregir
         \texttt{RCC.HSE\_VALUE} a 8\,MHz en el \texttt{.ioc} y regenerar el
         árbol de reloj en STM32CubeMX.
